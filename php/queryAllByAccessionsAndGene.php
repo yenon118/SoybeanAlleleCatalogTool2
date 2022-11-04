@@ -31,7 +31,7 @@ $gff_table = $table_names["gff_table"];
 $accession_mapping_table = $table_names["accession_mapping_table"];
 
 // Generate SQL string
-$query_str = $query_str . "SELECT Chromosome, Start, End, Name AS Gene ";
+$query_str = "SELECT Chromosome, Start, End, Name AS Gene ";
 $query_str = $query_str . "FROM " . $db . "." . $gff_table . " ";
 $query_str = $query_str . "WHERE Name IN ('" . $gene . "');";
 

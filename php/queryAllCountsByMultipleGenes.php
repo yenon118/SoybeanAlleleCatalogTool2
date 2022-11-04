@@ -45,7 +45,7 @@ $accession_mapping_table = $table_names["accession_mapping_table"];
 for ($i = 0; $i < count($gene_array); $i++) {
 
     // Generate SQL string
-    $query_str = $query_str . "SELECT Chromosome, Start, End, Name AS Gene ";
+    $query_str = "SELECT Chromosome, Start, End, Name AS Gene ";
     $query_str = $query_str . "FROM " . $db . "." . $gff_table . " ";
     $query_str = $query_str . "WHERE Name IN ('" . $gene_array[$i] . "');";
 

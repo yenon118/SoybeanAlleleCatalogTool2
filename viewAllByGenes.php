@@ -75,9 +75,9 @@ $splice_color_code = "#9EE85C";
 for ($i = 0; $i < count($gene_array); $i++) {
 
     // Generate SQL string
-    $query_str = $query_str . "SELECT Chromosome, Start, End, Name AS Gene ";
+    $query_str = "SELECT Chromosome, Start, End, Name AS Gene ";
     $query_str = $query_str . "FROM " . $db . "." . $gff_table . " ";
-    $query_str = $query_str . "WHERE Name IN ('" . $gene_array[$i] . "');";
+    $query_str = $query_str . "WHERE (Name = '" . $gene_array[$i] . "') OR (UPPER(Name) = UPPER('" . $gene_array[$i] . "'));";
 
     $stmt = $PDO->prepare($query_str);
     $stmt->execute();
@@ -91,7 +91,7 @@ for ($i = 0; $i < count($gene_array); $i++) {
         $db,
         $gff_table,
         $accession_mapping_table,
-        $gene_array[$i],
+        $gene_result_arr[0]["Gene"],
         $gene_result_arr[0]["Chromosome"],
         $improvement_status_array,
         ""

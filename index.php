@@ -50,9 +50,9 @@ include '../header.php';
                     <br />
                     <br />
                     <label><b>Accessions:</b></label>
-                    <span id="accession_examples_2" style="font-size:9pt">&nbsp;(eg HN058_PI458515 PI_479752)</span>
+                    <span id="accession_examples_2" style="font-size:9pt">&nbsp;(eg HN005_PI404166 HN006_PI407788A)</span>
                     <br />
-                    <textarea id="accession_2" name="accession_2" rows="12" cols="50" placeholder="&#10;Please separate each accession into a new line. &#10;&#10;Example:&#10;HN052_PI424079&#10;PI_479752"></textarea>
+                    <textarea id="accession_2" name="accession_2" rows="12" cols="50" placeholder="&#10;Please separate each accession into a new line. &#10;&#10;Example:&#10;HN005_PI404166&#10;HN006_PI407788A"></textarea>
                     <br /><br />
                     <label><b>Gene ID:</b></label>
                     <span id="gene_example_2" style="font-size:9pt">&nbsp;(One gene name only; eg Glyma.01G049100)</span>

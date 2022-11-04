@@ -15,7 +15,12 @@ $gff_table = $table_names["gff_table"];
 $accession_mapping_table = $table_names["accession_mapping_table"];
 
 // Query gene from database
-$query_str = "SELECT DISTINCT Name AS Gene FROM " . $db . "." . $gff_table . " WHERE Name IS NOT NULL LIMIT 3;";
+if ($dataset == "Soy1066") {
+    $query_str = "SELECT DISTINCT Name AS Gene FROM " . $db . "." . $gff_table;
+    $query_str = $query_str . " WHERE (Name IS NOT NULL) AND (Name LIKE 'Glyma.01G049%') LIMIT 3;";
+} else {
+    $query_str = "SELECT DISTINCT Name AS Gene FROM " . $db . "." . $gff_table . " WHERE (Name IS NOT NULL) LIMIT 3;";
+}
 
 // Perform query
 $stmt = $PDO->prepare($query_str);
@@ -25,8 +30,14 @@ $result = $stmt->fetchAll();
 $gene_result_arr = pdoResultFilter($result);
 
 // Query accession from database
-$query_str = "SELECT DISTINCT SoyKB_Accession AS Accession FROM " . $db . "." . $accession_mapping_table;
-$query_str = $query_str . " WHERE (SoyKB_Accession IS NOT NULL) AND (SoyKB_Accession LIKE 'HN%') LIMIT 2;";
+if ($dataset == "Soy1066" || $dataset == "Soy775") {
+    $query_str = "SELECT DISTINCT SoyKB_Accession AS Accession FROM " . $db . "." . $accession_mapping_table;
+    $query_str = $query_str . " WHERE (SoyKB_Accession IS NOT NULL) AND (SoyKB_Accession LIKE 'HN%') LIMIT 2;";
+} else {
+    $query_str = "SELECT DISTINCT SoyKB_Accession AS Accession FROM " . $db . "." . $accession_mapping_table;
+    $query_str = $query_str . " WHERE (SoyKB_Accession IS NOT NULL) LIMIT 2;";
+}
+
 
 // Perform query
 $stmt = $PDO->prepare($query_str);

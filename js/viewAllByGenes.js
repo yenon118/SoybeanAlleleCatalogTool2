@@ -216,11 +216,6 @@ function constructMetadataTable(res, dataset, key, gene, chromosome, position, g
 
 
 function queryMetadataByImprovementStatusAndGenotypeCombination(dataset, key, gene, chromosome, position, genotype, genotypeDescription){
-
-    if (key == "Soja") {
-        key = "G. soja";
-    }
-
     $.ajax({
         url: './php/queryMetadataByImprovementStatusAndGenotypeCombination.php',
         type: 'GET',
@@ -254,94 +249,84 @@ function queryMetadataByImprovementStatusAndGenotypeCombination(dataset, key, ge
             console.log('Error with code ' + xhr.status + ': ' + xhr.statusText);
         }
     });
-
 }
 
 
-function queryAllCountsByGene(dataset, gene, improvement_status_array_string){
+function queryAllCountsByGene(dataset, gene, improvement_status_array_string) {
     let improvement_status_array = improvement_status_array_string.split(";");
 
-    if (dataset && gene && improvement_status_array_string) {
-        if(improvement_status_array.length > 0) {
-            $.ajax({
-                url: './php/queryAllCountsByGene.php',
-                type: 'GET',
-                contentType: 'application/json',
-                data: {
-                    Dataset: dataset,
-                    Gene: gene,
-                    Improvement_Status_Array: improvement_status_array
-                },
-                success: function (response) {
-                    res = JSON.parse(response);
-                    res = res.data;
+    if (dataset && gene) {
+        $.ajax({
+            url: './php/queryAllCountsByGene.php',
+            type: 'GET',
+            contentType: 'application/json',
+            data: {
+                Dataset: dataset,
+                Gene: gene,
+                Improvement_Status_Array: improvement_status_array
+            },
+            success: function (response) {
+                res = JSON.parse(response);
+                res = res.data;
 
-                    if (res.length > 0) {
-                        let csvString = convertJsonToPositionSeparatedCsv(res);
-                        createAndDownloadCsvFile(csvString, String(dataset) + "_" + gene + "_Counts");
+                if (res.length > 0) {
+                    let csvString = convertJsonToPositionSeparatedCsv(res);
+                    createAndDownloadCsvFile(csvString, String(dataset) + "_" + gene + "_Counts");
 
-                    } else {
-                        alert("Downloading counts by " + gene + " gene of " + dataset + " is not available!!!");
-                    }
-
-                },
-                error: function (xhr, status, error) {
-                    console.log('Error with code ' + xhr.status + ': ' + xhr.statusText);
+                } else {
                     alert("Downloading counts by " + gene + " gene of " + dataset + " is not available!!!");
                 }
-            });
-        } else {
-            alert("Downloading counts by " + gene + " gene of " + dataset + " is not available!!!");
-        }
+
+            },
+            error: function (xhr, status, error) {
+                console.log('Error with code ' + xhr.status + ': ' + xhr.statusText);
+                alert("Downloading counts by " + gene + " gene of " + dataset + " is not available!!!");
+            }
+        });
     } else {
         alert("Downloading counts by " + gene + " gene of " + dataset + " is not available!!!");
     }
 }
 
 
-function queryAllByGene(dataset, gene, improvement_status_array_string){
+function queryAllByGene(dataset, gene, improvement_status_array_string) {
     let improvement_status_array = improvement_status_array_string.split(";");
 
-    if (dataset && gene && improvement_status_array_string) {
-        if(improvement_status_array.length > 0) {
-            $.ajax({
-                url: './php/queryAllByGene.php',
-                type: 'GET',
-                contentType: 'application/json',
-                data: {
-                    Dataset: dataset,
-                    Gene: gene,
-                    Improvement_Status_Array: improvement_status_array
-                },
-                success: function (response) {
-                    res = JSON.parse(response);
-                    res = res.data;
+    if (dataset && gene) {
+        $.ajax({
+            url: './php/queryAllByGene.php',
+            type: 'GET',
+            contentType: 'application/json',
+            data: {
+                Dataset: dataset,
+                Gene: gene,
+                Improvement_Status_Array: improvement_status_array
+            },
+            success: function (response) {
+                res = JSON.parse(response);
+                res = res.data;
 
-                    if (res.length > 0) {
-                        let csvString = convertJsonToCsv(res);
-                        createAndDownloadCsvFile(csvString, String(dataset) + "_" + gene + "_Data");
+                if (res.length > 0) {
+                    let csvString = convertJsonToCsv(res);
+                    createAndDownloadCsvFile(csvString, String(dataset) + "_" + gene + "_Data");
 
-                    } else {
-                        alert("Downloading data by " + gene + " gene of " + dataset + " is not available!!!");
-                    }
-
-                },
-                error: function (xhr, status, error) {
-                    console.log('Error with code ' + xhr.status + ': ' + xhr.statusText);
+                } else {
                     alert("Downloading data by " + gene + " gene of " + dataset + " is not available!!!");
                 }
-            });
-        } else {
-            alert("Downloading data by " + gene + " gene of " + dataset + " is not available!!!");
-        }
+
+            },
+            error: function (xhr, status, error) {
+                console.log('Error with code ' + xhr.status + ': ' + xhr.statusText);
+                alert("Downloading data by " + gene + " gene of " + dataset + " is not available!!!");
+            }
+        });
     } else {
         alert("Downloading data by " + gene + " gene of " + dataset + " is not available!!!");
     }
 }
 
 
-function queryAccessionInformation(dataset){
-
+function queryAccessionInformation(dataset) {
     if (dataset) {
         $.ajax({
             url: './php/queryAccessionInformation.php',
@@ -371,16 +356,15 @@ function queryAccessionInformation(dataset){
     } else {
         alert("Accession information of the " + dataset + " dataset is not available!!!");
     }
-
 }
 
 
-function queryAllCountsByMultipleGenes(dataset, gene_array_string, improvement_status_array_string){
+function queryAllCountsByMultipleGenes(dataset, gene_array_string, improvement_status_array_string) {
     let gene_array = gene_array_string.split(";");
     let improvement_status_array = improvement_status_array_string.split(";");
 
-    if (dataset && gene_array_string && improvement_status_array_string) {
-        if(gene_array.length > 0 && improvement_status_array.length > 0) {
+    if (dataset && gene_array_string) {
+        if(gene_array.length > 0) {
             $.ajax({
                 url: './php/queryAllCountsByMultipleGenes.php',
                 type: 'GET',
@@ -414,16 +398,15 @@ function queryAllCountsByMultipleGenes(dataset, gene_array_string, improvement_s
     } else {
         alert("Downloading all counts by multiple genes of " + dataset + " is not available!!!");
     }
-
 }
 
 
-function queryAllByMultipleGenes(dataset, gene_array_string, improvement_status_array_string){
+function queryAllByMultipleGenes(dataset, gene_array_string, improvement_status_array_string) {
     let gene_array = gene_array_string.split(";");
     let improvement_status_array = improvement_status_array_string.split(";");
 
-    if (dataset && gene_array_string && improvement_status_array_string) {
-        if(gene_array.length > 0 && improvement_status_array.length > 0) {
+    if (dataset && gene_array_string) {
+        if(gene_array.length > 0) {
             $.ajax({
                 url: './php/queryAllByMultipleGenes.php',
                 type: 'GET',

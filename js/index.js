@@ -30,24 +30,149 @@ function createAndDownloadCsvFile(csvString, filename) {
 }
 
 
-function queryAccessionInformation() {
+function updateSearchByGeneIDs(event) {
+    var dataset = event.target.value;
 
-    var selectedDataset1 = document.getElementById("dataset_1").value;
-    var selectedDataset2 = document.getElementById("dataset_2").value;
+    if (dataset) {
+        $.ajax({
+            url: './php/updateSearchByGeneIDs.php',
+            type: 'GET',
+            contentType: 'application/json',
+            data: {
+                Dataset: dataset
+            },
+            success: function (response) {
+                res = JSON.parse(response);
+                res = res.data;
 
-    if (selectedDataset1 == selectedDataset2) {
-        selectedDataset = selectedDataset1;
+                if (res.hasOwnProperty('Gene')) {
+                    if (res['Gene'].length > 0) {
+                        document.getElementById('gene_examples_1').innerHTML = "";
+                        var gene_examples_1_str = "(eg ";
+                        for (let i = 0; i < res['Gene'].length; i++) {
+                            gene_examples_1_str += res['Gene'][i]['Gene'] + " ";
+                        }
+                        gene_examples_1_str += ")";
+                        document.getElementById('gene_examples_1').innerHTML = gene_examples_1_str;
+
+                        document.getElementById('gene_1').placeholder = "";
+                        var gene_1_str = "\nPlease separate each gene into a new line.\n\nExample:\n";
+                        for (let i = 0; i < res['Gene'].length; i++) {
+                            gene_1_str += res['Gene'][i]['Gene'] + "\n";
+                        }
+                        document.getElementById('gene_1').placeholder = gene_1_str;
+                    }
+                }
+
+                // if (res.hasOwnProperty('Improvement_Status')) {
+                //     document.getElementById('improvement_status_div_1').innerHTML = "";
+                //     if (res['Improvement_Status'].length > 0) {
+
+                //         var label = document.createElement("label");
+                //         label.innerHTML = res['Key_Column'];
+                //         label.style.fontWeight = "bold";
+                //         document.getElementById('improvement_status_div_1').appendChild(label);
+
+                //         document.getElementById('improvement_status_div_1').appendChild(document.createElement("br"));
+
+                //         for (let i = 0; i < res['Improvement_Status'].length; i++) {
+                //             var input_box = document.createElement("input");
+                //             input_box.type = "checkbox";
+                //             input_box.id = res['Improvement_Status'][i]['Key'];
+                //             input_box.name = "improvement_status_1[]";
+                //             input_box.value = res['Improvement_Status'][i]['Key'];
+                //             input_box.style.marginRight = "5px";
+                //             input_box.checked = true;
+
+                //             document.getElementById('improvement_status_div_1').appendChild(input_box);
+
+                //             var label = document.createElement("label");
+                //             label.innerHTML = res['Improvement_Status'][i]['Key'];
+                //             label.style.fontWeight = "normal";
+                //             label.style.marginRight = "10px";
+                //             document.getElementById('improvement_status_div_1').appendChild(label);
+
+                //             if (i != 0 && i % 4 == 0) {
+                //                 document.getElementById('improvement_status_div_1').appendChild(document.createElement("br"));
+                //             }
+                //         }
+                //     }
+                // }
+
+            },
+            error: function (xhr, status, error) {
+                console.log('Error with code ' + xhr.status + ': ' + xhr.statusText);
+                alert("Unable to fetch data to update the Search by Gene IDs!!!");
+            }
+        });
     } else {
-        selectedDataset = "Soy1066";
+        alert("Unable to fetch data to update the Search by Gene IDs!!!");
     }
+}
 
-    if (selectedDataset) {
+
+function updateSearchByAccessionsandGeneID(event) {
+    var dataset = event.target.value;
+
+    if (dataset) {
+        $.ajax({
+            url: './php/updateSearchByAccessionsandGeneID.php',
+            type: 'GET',
+            contentType: 'application/json',
+            data: {
+                Dataset: dataset
+            },
+            success: function (response) {
+                res = JSON.parse(response);
+                res = res.data;
+
+                if (res.hasOwnProperty('Accession')) {
+                    if (res['Accession'].length > 0) {
+                        document.getElementById('accession_examples_2').innerHTML = "";
+                        var accession_examples_2_str = "(eg ";
+                        for (let i = 0; i < res['Accession'].length; i++) {
+                            accession_examples_2_str += res['Accession'][i]['Accession'] + " ";
+                        }
+                        accession_examples_2_str += ")";
+                        document.getElementById('accession_examples_2').innerHTML = accession_examples_2_str;
+
+                        document.getElementById('accession_2').placeholder = "";
+                        var accession_2_str = "\nPlease separate each accession into a new line.\n\nExample:\n";
+                        for (let i = 0; i < res['Accession'].length; i++) {
+                            accession_2_str += res['Accession'][i]['Accession'] + "\n";
+                        }
+                        document.getElementById('accession_2').placeholder = accession_2_str;
+                    }
+
+                    if (res.hasOwnProperty('Gene')) {
+                        if (res['Gene'].length > 0) {
+                            document.getElementById('gene_example_2').innerHTML = "(One gene ID only; eg " + res['Gene'][0]['Gene'] + ")";
+                        }
+                    }
+                }
+
+            },
+            error: function (xhr, status, error) {
+                console.log('Error with code ' + xhr.status + ': ' + xhr.statusText);
+                alert("Unable to fetch data to update the Search by Accessions and Gene ID!!!");
+            }
+        });
+    } else {
+        alert("Unable to fetch data to update the Search by Accessions and Gene ID!!!");
+    }
+}
+
+
+function queryAccessionInformation() {
+    var dataset = "Soy1066";
+
+    if (dataset) {
         $.ajax({
             url: './php/queryAccessionInformation.php',
             type: 'GET',
             contentType: 'application/json',
             data: {
-                Dataset: selectedDataset
+                Dataset: dataset
             },
             success: function (response) {
                 res = JSON.parse(response);
@@ -55,20 +180,19 @@ function queryAccessionInformation() {
 
                 if (res.length > 0) {
                     let csvString = convertJsonToCsv(res);
-                    createAndDownloadCsvFile(csvString, String(selectedDataset) + "_Accession_Information");
+                    createAndDownloadCsvFile(csvString, String(dataset) + "_Accession_Information");
                     
                 } else {
-                    alert("Accession information of the " + selectedDataset + " dataset is not available!!!");
+                    alert("Accession information of the " + dataset + " dataset is not available!!!");
                 }
                 
             },
             error: function (xhr, status, error) {
                 console.log('Error with code ' + xhr.status + ': ' + xhr.statusText);
-                alert("Accession information of the " + selectedDataset + " dataset is not available!!!");
+                alert("Accession information of the " + dataset + " dataset is not available!!!");
             }
         });
     } else {
-        alert("Accession information of the " + selectedDataset + " dataset is not available!!!");
+        alert("Accession information of the " + dataset + " dataset is not available!!!");
     }
-
 }

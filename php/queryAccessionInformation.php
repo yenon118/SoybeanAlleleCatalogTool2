@@ -2,16 +2,20 @@
 
 include '../../config.php';
 include 'pdoResultFilter.php';
+include 'getTableNames.php';
 
 $dataset = trim($_GET['Dataset']);
 
 $db = "soykb";
-$table = "act_" . $dataset . "_Accession_Mapping";
 
+// Table names and datasets
+$table_names = getTableNames($dataset);
+$accession_mapping_table = $table_names["accession_mapping_table"];
 
-$query_str = "SELECT * FROM " . $db . "." . $table;
+// Generate query string
+$query_str = "SELECT * FROM " . $db . "." . $accession_mapping_table;
 
-
+// Perform query
 $stmt = $PDO->prepare($query_str);
 $stmt->execute();
 $result = $stmt->fetchAll();

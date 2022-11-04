@@ -115,7 +115,6 @@ function queryAllByAccessionsAndGene(dataset, gene, accession_array_string) {
 
 
 function queryAccessionInformation(dataset){
-
     if (dataset) {
         $.ajax({
             url: './php/queryAccessionInformation.php',
@@ -145,5 +144,4 @@ function queryAccessionInformation(dataset){
     } else {
         alert("Accession information of the " + dataset + " dataset is not available!!!");
     }
-
 }

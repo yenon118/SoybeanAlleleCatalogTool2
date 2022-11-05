@@ -212,7 +212,7 @@ for ($i = 0; $i < count($gene_array); $i++) {
         echo "<br />";
 
     } else {
-        echo "<p>No Allele Catalog data available for this gene!!!</p>";
+        echo "<p>No Allele Catalog data available for " . $gene_array[$i] . " gene!!!</p>";
     }
 }
 

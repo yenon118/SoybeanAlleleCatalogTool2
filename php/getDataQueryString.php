@@ -31,7 +31,7 @@ function getDataQueryString($dataset, $db, $gff_table, $accession_mapping_table,
     $query_str = $query_str . "        ORDER BY G.Position ";
     $query_str = $query_str . "    ) AS GD ";
     $query_str = $query_str . "    LEFT JOIN " . $db . "." . $accession_mapping_table . " AS AM ";
-    $query_str = $query_str . "    ON AM.Accession = GD.Accession ";
+    $query_str = $query_str . "    ON BINARY AM.Accession = GD.Accession ";
     $query_str = $query_str . "    GROUP BY AM.Classification, AM.Improvement_Status, AM.Maturity_Group, AM.Country, AM.State, GD.Accession, AM.SoyKB_Accession, AM.GRIN_Accession, GD.Gene, GD.Chromosome ";
     $query_str = $query_str . ") AS ACD ";
     $query_str = $query_str . $where;
